@@ -23,4 +23,5 @@ public interface Task {
 
     boolean isRepeated();
 
+    int nextTimeAfter(int current);
 }

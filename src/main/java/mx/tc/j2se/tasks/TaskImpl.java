@@ -1,26 +1,34 @@
 package mx.tc.j2se.tasks;
 
 public class TaskImpl implements Task{
-    public TaskImpl(){
 
+    String title;
+    int time, startTime, endTime, interval, next, dif;
+    boolean status, repetitive;
+
+    public TaskImpl(){
     }
 
     public TaskImpl(String title, int time){
-
+        setTitle(title);
+        setTime(time);
+        setActive(true);
     }
 
     public TaskImpl(String title, int start, int end, int interval){
-
+        setTitle(title);
+        setTime(start, end, interval);
+        setActive(true);
+        this.repetitive = true;
     }
 
 
 
-    String title;
-    int time;
+
 
     @Override
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     @Override
@@ -30,46 +38,103 @@ public class TaskImpl implements Task{
 
     @Override
     public boolean isActive() {
-        return false;
+        return this.status;
     }
 
     @Override
     public void setActive(boolean active) {
-
+        this.status = active;
     }
 
     @Override
     public int getTime() {
-        return 0;
+        if(this.isRepeated()){
+            return this.startTime;
+        }
+        else{
+            return this.time;
+        }
     }
 
     @Override
     public void setTime(int time) {
+        if(this.isRepeated()){
+            this.repetitive = false;
+            this.startTime = time;
+        }
         this.time = time;
     }
 
     @Override
     public int getStartTime() {
-        return 0;
+        if(this.isRepeated()){
+            return this.startTime;
+        }
+        else{
+            return this.time;
+        }
     }
 
     @Override
     public int getEndTime() {
-        return 0;
+        if(this.isRepeated()){
+            return this.endTime;
+        }
+        else{
+            return this.time;
+        }
     }
 
     @Override
     public int getRepeatInterval() {
-        return 0;
+        if(this.isRepeated()){
+            return this.interval;
+        }
+        else{
+            return 0;
+        }
     }
 
     @Override
     public void setTime(int start, int end, int interval) {
-
+        this.startTime = start;
+        this.endTime = end;
+        this.interval = interval;
+        this.repetitive = true;
     }
 
     @Override
     public boolean isRepeated() {
-        return false;
+        return this.repetitive;
+    }
+
+    @Override
+    public int nextTimeAfter(int current) {
+        if(current>this.getTime() && !this.isRepeated() || current>this.getEndTime()){
+            setActive(false);
+        }
+        if(this.isActive()){
+            if(this.isRepeated()){
+                if(current<this.getStartTime()){
+                    next = this.getStartTime();
+                }
+                else if(current>this.getStartTime() && current<this.getEndTime()){
+                    dif = this.getStartTime();
+                    while(current>dif){
+                        dif += this.interval;
+                    }
+                    next = dif - current;
+                }
+            }
+            else{
+                if(current<this.time) {
+                    next = this.time - current;
+                }
+            }
+            return next;
+        }
+        else {
+            return -1;
+        }
     }
 }
