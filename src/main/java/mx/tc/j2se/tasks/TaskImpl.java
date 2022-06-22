@@ -60,7 +60,6 @@ public class TaskImpl implements Task{
     public void setTime(int time) {
         if(this.isRepeated()){
             this.repetitive = false;
-            this.startTime = time;
         }
         this.time = time;
     }
@@ -111,16 +110,16 @@ public class TaskImpl implements Task{
     @Override
     public int nextTimeAfter(int current) {
         if(current>this.getTime() && !this.isRepeated() || current>this.getEndTime()){
-            setActive(false);
+            this.setActive(false);
         }
         if(this.isActive()){
             if(this.isRepeated()){
                 if(current<this.getStartTime()){
-                    next = this.getStartTime();
+                    next = this.getStartTime() - current;
                 }
                 else if(current>this.getStartTime() && current<this.getEndTime()){
                     dif = this.getStartTime();
-                    while(current>dif){
+                    while(current>=dif){
                         dif += this.interval;
                     }
                     next = dif - current;
