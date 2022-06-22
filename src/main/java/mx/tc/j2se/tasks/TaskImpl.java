@@ -62,6 +62,7 @@ public class TaskImpl implements Task{
             this.repetitive = false;
         }
         this.time = time;
+        this.status = true;
     }
 
     @Override
@@ -100,6 +101,7 @@ public class TaskImpl implements Task{
         this.endTime = end;
         this.interval = interval;
         this.repetitive = true;
+        this.status = true;
     }
 
     @Override
@@ -109,16 +111,23 @@ public class TaskImpl implements Task{
 
     @Override
     public int nextTimeAfter(int current) {
-        if(current>this.getTime() && !this.isRepeated() || current>this.getEndTime()){
-            this.setActive(false);
+        if(this.repetitive){
+            if(current>=this.endTime){
+                this.status = false;
+            }
         }
-        if(this.isActive()){
-            if(this.isRepeated()){
-                if(current<this.getStartTime()){
-                    next = this.getStartTime() - current;
+        else{
+            if(current>=this.time){
+                this.status = false;
+            }
+        }
+        if(this.status){
+            if(this.repetitive){
+                if(current<this.startTime){
+                    next = this.startTime - current;
                 }
-                else if(current>this.getStartTime() && current<this.getEndTime()){
-                    dif = this.getStartTime();
+                else if(current>this.startTime){
+                    dif = this.startTime;
                     while(current>=dif){
                         dif += this.interval;
                     }
@@ -126,9 +135,8 @@ public class TaskImpl implements Task{
                 }
             }
             else{
-                if(current<this.time) {
-                    next = this.time - current;
-                }
+                next = this.time - current;
+                System.out.println("NonRep");
             }
             return next;
         }
