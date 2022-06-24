@@ -3,7 +3,7 @@ package mx.tc.j2se.tasks;
 public class TaskImpl implements Task{
 
     String title;
-    int time, startTime, endTime, interval, next, dif;
+    int time, startTime, endTime, interval;
     boolean status, repetitive;
 
     public TaskImpl(){
@@ -28,7 +28,7 @@ public class TaskImpl implements Task{
 
     @Override
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     @Override
@@ -38,110 +38,94 @@ public class TaskImpl implements Task{
 
     @Override
     public boolean isActive() {
-        return this.status;
+        return status;
     }
 
     @Override
     public void setActive(boolean active) {
-        this.status = active;
+        status = active;
     }
 
     @Override
     public int getTime() {
-        if(this.isRepeated()){
-            return this.startTime;
-        }
-        else{
-            return this.time;
-        }
+        if(repetitive)
+            return startTime;
+        else
+            return time;
     }
 
     @Override
     public void setTime(int time) {
-        if(this.isRepeated()){
-            this.repetitive = false;
-        }
+        if(repetitive)
+            repetitive = false;
         this.time = time;
-        this.status = true;
+        status = true;
     }
 
     @Override
     public int getStartTime() {
-        if(this.isRepeated()){
-            return this.startTime;
-        }
-        else{
-            return this.time;
-        }
+        if(repetitive)
+            return startTime;
+        else
+            return time;
     }
 
     @Override
     public int getEndTime() {
-        if(this.isRepeated()){
-            return this.endTime;
-        }
-        else{
-            return this.time;
-        }
+        if(repetitive)
+            return endTime;
+        else
+            return time;
     }
 
     @Override
     public int getRepeatInterval() {
-        if(this.isRepeated()){
-            return this.interval;
-        }
-        else{
+        if(repetitive)
+            return interval;
+        else
             return 0;
-        }
     }
 
     @Override
     public void setTime(int start, int end, int interval) {
-        this.startTime = start;
-        this.endTime = end;
+        startTime = start;
+        endTime = end;
         this.interval = interval;
-        this.repetitive = true;
-        this.status = true;
+        repetitive = true;
+        status = true;
     }
 
     @Override
     public boolean isRepeated() {
-        return this.repetitive;
+        return repetitive;
     }
 
     @Override
     public int nextTimeAfter(int current) {
-        if(this.repetitive){
-            if(current>=this.endTime){
-                this.status = false;
-            }
-        }
-        else{
-            if(current>=this.time){
-                this.status = false;
-            }
-        }
-        if(this.status){
-            if(this.repetitive){
-                if(current<this.startTime){
-                    next = this.startTime - current;
+        if(current>=0 && status){
+            if(repetitive){
+                if(startTime>current)
+                    return startTime;
+                else if (endTime>current) {
+                    int next = startTime;
+                    while(next<=current)
+                        next += interval;
+                    if (next<=endTime)
+                        return next;
+                    else
+                        return -1;
                 }
-                else if(current>this.startTime){
-                    dif = this.startTime;
-                    while(current>=dif){
-                        dif += this.interval;
-                    }
-                    next = dif - current;
-                }
+                else
+                    return -1;
             }
-            else{
-                next = this.time - current;
-                System.out.println("NonRep");
+            else {
+                if (time>current)
+                    return time;
+                else
+                    return -1;
             }
-            return next;
         }
-        else {
+        else
             return -1;
-        }
     }
 }
