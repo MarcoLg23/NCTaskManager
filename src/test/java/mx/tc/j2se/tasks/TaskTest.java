@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskTest {
-    Task[] tasks;
     @Test
     public void taskTest(){
         Task task = new TaskImpl("Correr a las 55",55);
@@ -21,8 +20,6 @@ public class TaskTest {
         assertEquals(-1,task.nextTimeAfter(43));
         assertFalse(task.isRepeated());
         assertTrue(task.isActive());
-
-        //tasks.add(task);
     }
     @Test
     public void repTaskTest(){

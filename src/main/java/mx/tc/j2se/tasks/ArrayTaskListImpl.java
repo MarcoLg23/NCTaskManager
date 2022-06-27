@@ -2,12 +2,10 @@ package mx.tc.j2se.tasks;
 
 public class ArrayTaskListImpl implements ArrayTaskList{
 
-    Task[] tasks = new Task[]{};
+    Task[] tasks = new Task[0];
 
     public ArrayTaskListImpl(){
     }
-
-
 
     /**
      * @param task task that is going to be added
@@ -15,7 +13,15 @@ public class ArrayTaskListImpl implements ArrayTaskList{
     @Override
     public void add(Task task) {
 
-        tasks[0] = task;
+        Task[] tasks2 = new Task[tasks.length+1];
+        int index = 0;
+        for (Task i: tasks) {
+            tasks2[index] = i;
+            System.out.println(tasks2[index]);
+            index++;
+        }
+        tasks2[tasks2.length-1] = task;
+        tasks = tasks2;
     }
 
     /**
@@ -24,11 +30,26 @@ public class ArrayTaskListImpl implements ArrayTaskList{
      */
     @Override
     public boolean remove(Task task) {
+        boolean exists = false;
+        int count = 0, index = 0;
         for(Task i : tasks) {
-            if (i == task)
-                return true;
+            if (i == task) {
+                exists = true;
+                tasks[index] = null;
+                count++;
+            }
+            index++;
         }
-        return false;
+        Task[] tasks2 = new Task[tasks.length-count];
+        index = 0;
+        for (Task i : tasks) {
+            if (i != null) {
+                tasks2[index] = i;
+                index++;
+            }
+        }
+        tasks = tasks2;
+        return exists;
     }
 
     /**
