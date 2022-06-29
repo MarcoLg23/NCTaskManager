@@ -76,6 +76,12 @@ public class ArrayTaskListImpl implements ArrayTaskList{
      */
     @Override
     public ArrayTaskList incoming(int from, int to) {
-        return null;
+        ArrayTaskList tasksInTime = new ArrayTaskListImpl();
+        for (Task task : tasks)
+            if (task.getTime() > from && task.getTime() < to) {
+                tasksInTime.add(task);
+                System.out.println(task.getTitle());
+            }
+        return tasksInTime;
     }
 }

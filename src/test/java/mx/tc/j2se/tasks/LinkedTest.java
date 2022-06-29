@@ -2,26 +2,25 @@ package mx.tc.j2se.tasks;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ArrayTest {
+public class LinkedTest {
+
     @Test
-    public void TaskArray(){
+    public void TaskLinked(){
 
-        Task task1 = new TaskImpl("Comer", 5);
+        Task task1 = new TaskImpl("Comer", -5);
         Task task2 = new TaskImpl("Dormir",2,122,24);
         Task task3 = new TaskImpl("Levantarse", 7);
 
-        ArrayTaskList tasks = new ArrayTaskListImpl();
+        LinkedTaskList tasks = new LinkedTaskListImpl();
         assertEquals(0,tasks.size());
         tasks.add(task1);
+        tasks.getTask(5);
         tasks.add(task1);
         tasks.add(task2);
         tasks.add(task3);
+        tasks.add(null);
         assertEquals(4,tasks.size());
-
-        //assertTrue(tasks.remove(task2));
-        //assertEquals(3,tasks.size());
-        assertEquals(4,tasks.incoming(4,8).size());
     }
 }

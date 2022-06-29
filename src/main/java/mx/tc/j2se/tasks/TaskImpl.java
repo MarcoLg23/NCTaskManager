@@ -9,13 +9,13 @@ public class TaskImpl implements Task{
     public TaskImpl(){
     }
 
-    public TaskImpl(String title, int time){
+    public TaskImpl(String title, int time) {
         setTitle(title);
         setTime(time);
         setActive(true);
     }
 
-    public TaskImpl(String title, int start, int end, int interval){
+    public TaskImpl(String title, int start, int end, int interval) {
         setTitle(title);
         setTime(start, end, interval);
         setActive(true);
@@ -56,10 +56,15 @@ public class TaskImpl implements Task{
 
     @Override
     public void setTime(int time) {
-        if(repetitive)
-            repetitive = false;
-        this.time = time;
-        status = true;
+        if (time>=0){
+            if(repetitive)
+                repetitive = false;
+            this.time = time;
+            status = true;
+        }
+        else{
+            throw new IllegalArgumentException("Start time cannot be less than 0, time not set");
+        }
     }
 
     @Override
@@ -87,12 +92,16 @@ public class TaskImpl implements Task{
     }
 
     @Override
-    public void setTime(int start, int end, int interval) {
-        startTime = start;
-        endTime = end;
-        this.interval = interval;
-        repetitive = true;
-        status = true;
+    public void setTime(int start, int end, int interval) throws IllegalArgumentException {
+        if (start>=0 && interval >0) {
+            startTime = start;
+            endTime = end;
+            this.interval = interval;
+            repetitive = true;
+            status = true;
+        }
+        else
+            throw new IllegalArgumentException("Start time cannot be less than 0, time not set");
     }
 
     @Override
