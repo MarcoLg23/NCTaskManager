@@ -56,14 +56,17 @@ public class TaskImpl implements Task{
 
     @Override
     public void setTime(int time) {
-        if (time>=0){
-            if(repetitive)
-                repetitive = false;
-            this.time = time;
-            status = true;
-        }
-        else{
-            throw new IllegalArgumentException("Start time cannot be less than 0, time not set");
+        try {
+            if (time >= 0) {
+                if (repetitive)
+                    repetitive = false;
+                this.time = time;
+                status = true;
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }   catch (IllegalArgumentException e){
+            System.out.println("Start time cannot be less than 0, time not set");
         }
     }
 

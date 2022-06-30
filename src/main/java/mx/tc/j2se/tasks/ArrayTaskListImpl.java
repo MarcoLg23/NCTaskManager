@@ -5,6 +5,7 @@ public class ArrayTaskListImpl implements ArrayTaskList{
     Task[] tasks = new Task[0];
 
     public ArrayTaskListImpl(){
+
     }
 
     /**
