@@ -9,17 +9,18 @@ public class Circle {
     }
 
     public Circle(int radius) throws IllegalArgumentException{
-        if(radius<=0)
-            throw new IllegalArgumentException("Radius is less or equal to 0");
-        else
-            this.radius = radius;
+        setRadius(radius);
     }
 
     public void setRadius(int radius) throws IllegalArgumentException {
-        if(radius<=0)
-            throw new IllegalArgumentException("Radius is less or equal to 0");
-        else
-            this.radius = radius;
+        try {
+            if (radius <= 0)
+                throw new IllegalArgumentException();
+            else
+                this.radius = radius;
+        }   catch (IllegalArgumentException e){
+            System.out.println("Radius is less or equal to 0");
+        }
     }
 
     public int getRadius(){
